@@ -5,28 +5,38 @@ import tileUrl from "./assets/tile.svg?no-inline";
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
-const heading = document.createElement("h1");
-heading.textContent = "D1 project";
+const game = document.createElement("div");
+game.className = "game";
 
-const image = document.createElement("img");
-image.src = tileUrl;
-image.alt = "A teal tile with a cream circle";
-image.width = 96;
-image.height = 96;
-image.style.cursor = "pointer";
+let soldiers = 0;
 
-const message = document.createElement("p");
-message.textContent = "Your project starts here.";
+const soldier_count = document.createElement("h2");
+soldier_count.textContent = `Soldiers: ${soldiers}`; // text to show soldier count
 
-let count = 0;
+const soldier_camp = document.createElement("dic");
+soldier_camp.className = "camp";
 
-const count_message = document.createElement("p");
-count_message.textContent = `Count: ${count}`;
+// later change this to array of planets
+// for now only one to see on screen
+const planet = document.createElement("div")
+planet.className = "planet";
+planet.textContent = "🟠";
 
-image.addEventListener("click", () => {
-    count++;
-    count_message.textContent = `Count: ${count}`;
-    console.log(count);
+const enlist_button = document.createElement("button");
+enlist_button.className = "enlist_button";
+enlist_button.textContent = "Enlist";
+
+// add soldier and update text
+enlist_button.addEventListener("click", () => {
+  soldiers++;
+  soldier_count.textContent = `Soldiers: ${soldiers}`;
 });
 
-app.append(heading, image, message);
+const top_selection = document.createElement("div");
+top_selection.className = "top_section";
+
+top_section.append(camp, planet);
+
+game.append(soldier_count, top_section, enlist_button);
+
+app.append(game);
