@@ -16,6 +16,8 @@ interface Planet {
   conquered: boolean;
 }
 
+import terranPlanet from "./assets/Terran.png?no-inline";
+
 const app = document.querySelector<HTMLElement>("#app")!;
 
 const game = document.createElement("div");
@@ -36,7 +38,13 @@ const planets: Planet[] = [
   {name: "Ice", cost: 3250, image: ice_planet, conquered: false},
   {name: "Bare", cost: 8840, image: bare_planet, conquered: false},
   {name: "Black Hole", cost: 50000, image: black_hole, conquered: false},
-]
+];
+
+// set init planet to planets[0]
+const planet = document.createElement("img");
+planet.src = planets[0].image;
+planet.className = "planet";
+planet.alt = "Terran planet";
 
 // set init planet to planets[0]
 const planet = document.createElement("img")
