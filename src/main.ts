@@ -1,7 +1,6 @@
 // Vite turns this import into a production-safe URL. Keep it as a file so
 // even this tiny example demonstrates a separately deployed asset.
 // @deno-types="./asset-url.d.ts"
-import tileUrl from "./assets/tile.svg?no-inline";
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -13,7 +12,7 @@ let soldiers = 0;
 const soldier_count = document.createElement("h2");
 soldier_count.textContent = `Soldiers: ${soldiers}`; // text to show soldier count
 
-const soldier_camp = document.createElement("dic");
+const soldier_camp = document.createElement("div");
 soldier_camp.className = "camp";
 
 // later change this to array of planets
@@ -35,8 +34,8 @@ enlist_button.addEventListener("click", () => {
 const top_selection = document.createElement("div");
 top_selection.className = "top_section";
 
-top_section.append(camp, planet);
+top_selection.append(soldier_camp, planet);
 
-game.append(soldier_count, top_section, enlist_button);
+game.append(soldier_count, top_selection, enlist_button);
 
 app.append(game);
