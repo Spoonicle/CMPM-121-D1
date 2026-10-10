@@ -13,8 +13,20 @@ image.src = tileUrl;
 image.alt = "A teal tile with a cream circle";
 image.width = 96;
 image.height = 96;
+image.style.cursor = "pointer";
 
 const message = document.createElement("p");
 message.textContent = "Your project starts here.";
+
+let count = 0;
+
+const count_message = document.createElement("p");
+count_message.textContent = `Count: ${count}`;
+
+image.addEventListener("click", () => {
+    count++;
+    count_message.textContent = `Count: ${count}`;
+    console.log(count);
+});
 
 app.append(heading, image, message);
