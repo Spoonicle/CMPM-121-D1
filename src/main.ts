@@ -2,6 +2,8 @@
 // even this tiny example demonstrates a separately deployed asset.
 // @deno-types="./asset-url.d.ts"
 
+import terranPlanet from "./assets/Terran.png?no-inline";
+
 const app = document.querySelector<HTMLElement>("#app")!;
 
 const game = document.createElement("div");
@@ -17,9 +19,10 @@ soldier_camp.className = "camp";
 
 // later change this to array of planets
 // for now only one to see on screen
-const planet = document.createElement("div")
+const planet = document.createElement("img");
+planet.src = terranPlanet;
 planet.className = "planet";
-planet.textContent = "🟠";
+planet.alt = "Terran planet";
 
 const enlist_button = document.createElement("button");
 enlist_button.className = "enlist_button";
