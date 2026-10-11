@@ -8,14 +8,8 @@ import Lava from "./assets/Lava.png";
 import Baren from "./assets/Baren.png";
 import Black_hole from "./assets/Black_hole.png";
 
-interface Planet {
-  name: string,
-  cost: number,
-  image: string,
-  soldier_count: number,
-  conquered: boolean,
-  display: boolean,
-}
+import { update_planet_display } from "./functions.ts"
+import type { Planet } from "./function.ts"
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -32,11 +26,11 @@ soldier_camp.className = "camp";
 
 // set array of planets
 const planets: Planet[] = [
-  {name: "Terran", cost: 350, image: Terran, soldier_count: 0, conquered: false, display: false},
-  {name: "Lava", cost: 1000, image: Lava, soldier_count: 0, conquered: false, display: false},
-  {name: "Ice", cost: 3250, image: Ice, soldier_count: 0, conquered: false, display: false},
-  {name: "Baren", cost: 8840, image: Baren, soldier_count: 0, conquered: false, display: false},
-  {name: "Black Hole", cost: 50000, image: Black_hole, soldier_count: 0, conquered: false, display: false},
+  {name: "Terran", cost: 100, image: Terran, soldier_count: 0, conquered: false, display: false},
+  {name: "Lava", cost: 120, image: Lava, soldier_count: 0, conquered: false, display: false},
+  {name: "Ice", cost: 130, image: Ice, soldier_count: 0, conquered: false, display: false},
+  {name: "Baren", cost: 140, image: Baren, soldier_count: 0, conquered: false, display: false},
+  {name: "Black Hole", cost: 150, image: Black_hole, soldier_count: 0, conquered: false, display: false},
 ]
 
 const enlist_button = document.createElement("button");
@@ -51,6 +45,8 @@ conquer_button.textContent = "Conquer";
 enlist_button.addEventListener("click", () => {
   soldiers++;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
+
+  update_planet_display(planets, planet_images, soldiers);
 });
 
 let current_planet = 0;
@@ -72,7 +68,9 @@ conquer_button.addEventListener("click", () => {
 
   soldier_count.textContent = `Soldiers: ${soldiers}`;
 
-  console.log(`${selected_planet.name} has been conquerd`);
+  update_planet_display(planets, planet_images, soldiers);
+
+  console.log(`${selected_planet.name} has been conquered`);
 })
 
 const top_selection = document.createElement("div");
@@ -80,6 +78,8 @@ top_selection.className = "top_section";
 
 const planet_container = document.createElement("div");
 planet_container.className = "planets_column";
+
+const planet_images: HTMLImageElement[] = [];
 
 // adding planets to the container
 for (let i = 0; i < planets.length; i++) {
@@ -90,12 +90,20 @@ for (let i = 0; i < planets.length; i++) {
   planet.alt = planets[i].name;
 
   planet.addEventListener("click", () => {
+    if (soldiers < planets[i].cost) {
+      console.log(`Not enough soldiers`);
+      return;
+    }
     current_planet = i;
     console.log(`Current selected planet is: ${planets[i].name}`);
   })
 
+  planet_images.push(planet);
   planet_container.append(planet);
 }
+ 
+  update_planet_display(planets, planet_images, soldiers);
+
 
 top_selection.append(soldier_camp, planet_container);
 
