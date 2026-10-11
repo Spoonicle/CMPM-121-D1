@@ -18,12 +18,6 @@ game.className = "game";
 
 let soldiers = 0;
 
-const soldier_count = document.createElement("h2");
-soldier_count.textContent = `Soldiers: ${soldiers}`; // text to show soldier count
-
-const soldier_camp = document.createElement("div");
-soldier_camp.className = "camp";
-
 // set array of planets
 const planets: Planet[] = [
   {
@@ -68,6 +62,26 @@ const planets: Planet[] = [
   },
 ];
 
+const camp_section = document.createElement("div");
+camp_section.className = "camp_section";
+
+const soldier_count = document.createElement("h2");
+soldier_count.className = "soldier_count";
+soldier_count.textContent = "Soldiers:";
+
+const soldier_camp = document.createElement("div");
+soldier_camp.className = "soldier_camp";
+
+const action_buttons = document.createElement("div");
+action_buttons.className = "action_buttons";
+
+const transport_button = document.createElement("button");
+transport_button.className = "action_btn transport_button";
+transport_button.textContent = "Transport";
+transport_button.addEventListener("click", () => {
+  console.log("Transport clicked");
+});
+
 const enlist_button = document.createElement("button");
 enlist_button.className = "enlist_button";
 enlist_button.textContent = "Enlist";
@@ -80,7 +94,6 @@ conquer_button.textContent = "Conquer";
 enlist_button.addEventListener("click", () => {
   soldiers++;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
-
   update_planet_display(planets, planet_images, soldiers);
 });
 
@@ -102,19 +115,37 @@ conquer_button.addEventListener("click", () => {
 
   soldiers -= selected_planet.cost;
   selected_planet.conquered = true;
-
   soldier_count.textContent = `Soldiers: ${soldiers}`;
-
   update_planet_display(planets, planet_images, soldiers);
-
   console.log(`${selected_planet.name} has been conquered`);
 });
 
-const top_selection = document.createElement("div");
-top_selection.className = "top_section";
+action_buttons.append(transport_button, enlist_button, conquer_button);
+
+camp_section.append(soldier_count, soldier_camp);
+
+const upgrades_shelf = document.createElement("div");
+upgrades_shelf.className = "upgrades_shelf";
+
+const upgrades_title = document.createElement("h3");
+upgrades_title.className = "upgrades_title";
+upgrades_title.textContent = "Upgrades:";
+upgrades_shelf.append(upgrades_title);
+
+["Barracks", "Pilot", "General"].forEach((name) => {
+  const item = document.createElement("div");
+  item.className = "upgrade_item";
+  item.textContent = name;
+  upgrades_shelf.append(item);
+});
 
 const planet_container = document.createElement("div");
 planet_container.className = "planets_column";
+
+const planets_title = document.createElement("h4");
+planets_title.className = "planets_title";
+planets_title.textContent = "Planets:";
+planet_container.append(planets_title);
 
 const planet_images: HTMLImageElement[] = [];
 
@@ -141,8 +172,6 @@ for (let i = 0; i < planets.length; i++) {
 
 update_planet_display(planets, planet_images, soldiers);
 
-top_selection.append(soldier_camp, planet_container);
-
-game.append(soldier_count, top_selection, enlist_button, conquer_button);
+game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
 
 app.append(game);
