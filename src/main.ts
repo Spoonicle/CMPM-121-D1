@@ -122,7 +122,7 @@ conquer_button.addEventListener("click", () => {
 
 action_buttons.append(transport_button, enlist_button, conquer_button);
 
-camp_section.append(soldier_count, soldier_camp);
+camp_section.append(soldier_camp, soldier_count);
 
 const upgrades_shelf = document.createElement("div");
 upgrades_shelf.className = "upgrades_shelf";

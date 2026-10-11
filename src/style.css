@@ -5,19 +5,22 @@ body {
   margin: 0;
   min-height: 100vh;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #app {
   padding: 24px;
   box-sizing: border-box;
   width: 100%;
-  min-height: 100vh;
+  max-width: 2000px;
 }
 
 .game {
   display: grid;
   grid-template-columns: 2.5fr 1.3fr 0.9fr;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto auto;
   gap: 24px;
   width: 100%;
   background: #2b2b36;
@@ -30,16 +33,32 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
+  justify-content: center;
 }
 
+.soldier_camp,
+.camp {
+  height: 320px;
+  border: 2px dashed #4a4a5a;
+  border-radius: 12px;
+  background: #181818;
+  position: relative;
+  overflow: hidden;
+}
+
+.soldier_count,
 .soldier_heading {
   margin: 0;
   font-size: 1.5rem;
   color: #e2e8f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .camp {
-  height: 280px;
   border: 2px dashed #4a4a5a;
   border-radius: 12px;
   background: #181818;
