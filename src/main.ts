@@ -34,7 +34,6 @@ for (let i = 0; i < planetsList.length; i++) {
   planet.className = "planet";
   planet.src = planetsList[i];
   planet.alt = planetsList[i];
-  soldier_camp.append(planet);
 }
 
 const enlist_button = document.createElement("button");
@@ -50,7 +49,7 @@ enlist_button.addEventListener("click", () => {
 const top_selection = document.createElement("div");
 top_selection.className = "top_section";
 
-top_selection.append(soldier_camp, planetsList);
+top_selection.append(soldier_camp);
 
 game.append(soldier_count, top_selection, enlist_button);
 
