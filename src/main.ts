@@ -58,12 +58,12 @@ conquer_button.addEventListener("click", () => {
   const selected_planet = planets[current_planet];
 
   if (selected_planet.conquered) {
-    console.log("Planet has already been conquered");
+    console.log(`${selected_planet.name} has already been conquered`);
     return;
   }
 
   if (soldiers < selected_planet.cost) {
-    console.log("Not enough troop to conquer");
+    console.log(`Not enough troops to conquer the planet: ${selected_planet.name}`);
     return;
   }
 
@@ -79,7 +79,7 @@ const top_selection = document.createElement("div");
 top_selection.className = "top_section";
 
 const planet_container = document.createElement("div");
-planet_container.className = "planet_container";
+planet_container.className = "planets_column";
 
 // adding planets to the container
 for (let i = 0; i < planets.length; i++) {
@@ -89,11 +89,16 @@ for (let i = 0; i < planets.length; i++) {
   planet.src = planets[i].image;
   planet.alt = planets[i].name;
 
+  planet.addEventListener("click", () => {
+    current_planet = i;
+    console.log(`Current selected planet is: ${planets[i].name}`);
+  })
+
   planet_container.append(planet);
 }
 
 top_selection.append(soldier_camp, planet_container);
 
-game.append(soldier_count, top_selection, enlist_button);
+game.append(soldier_count, top_selection, enlist_button, conquer_button);
 
 app.append(game);
