@@ -83,11 +83,11 @@ transport_button.addEventListener("click", () => {
 });
 
 const enlist_button = document.createElement("button");
-enlist_button.className = "enlist_button";
+enlist_button.className = "action_btn enlist_button";
 enlist_button.textContent = "Enlist";
 
 const conquer_button = document.createElement("button");
-conquer_button.className = "conquer_button";
+conquer_button.className = "action_btn conquer_button";
 conquer_button.textContent = "Conquer";
 
 // add soldier and update text
