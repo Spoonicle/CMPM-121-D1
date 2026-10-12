@@ -5,6 +5,8 @@ export interface Planet {
   soldier_count: number;
   conquered: boolean;
   display: boolean;
+  auto_soldier: number,
+  soldier_count: number,
 }
 
 export function update_planet_display(
@@ -33,4 +35,18 @@ export function update_planet_display(
       planet_image.style.filter = "none";
     }
   }
+}
+
+export function planet_auto_click(
+  planets: Planet[],
+  soldiers,
+) {
+  for (let i = 0; i < planets.length; i++) {
+    let current_planet = planets[i];
+
+    if (!current_planet.conquered) continue;
+
+    soldiers += current_planet.auto_soldier;
+  }
+  return soldiers;
 }

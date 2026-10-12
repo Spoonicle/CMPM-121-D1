@@ -8,7 +8,7 @@ import Lava from "./assets/Lava.png";
 import Baren from "./assets/Baren.png";
 import Black_hole from "./assets/Black_hole.png";
 
-import { update_planet_display } from "./functions.ts";
+import { update_planet_display, planet_auto_click } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -27,6 +27,8 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
+    auto_soldier: 10,
+    soldier_count: 0,
   },
   {
     name: "Lava",
@@ -35,6 +37,8 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
+    auto_soldier: 20,
+    soldier_count: 0,
   },
   {
     name: "Ice",
@@ -43,6 +47,8 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
+    auto_soldier: 30,
+    soldier_count: 0,
   },
   {
     name: "Baren",
@@ -51,6 +57,8 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
+    auto_soldier: 40,
+    soldier_count: 0,
   },
   {
     name: "Black Hole",
@@ -59,6 +67,8 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
+    auto_soldier: 50,
+    soldier_count: 0,
   },
 ];
 
@@ -171,6 +181,14 @@ for (let i = 0; i < planets.length; i++) {
 }
 
 update_planet_display(planets, planet_images, soldiers);
+
+setInterval(() => {
+  soldiers = planet_auto_click(planets, soldiers);
+
+  soldier_count.textContent = `Soldiers: ${soldiers}`;
+
+  update_planet_display(planets, planet_images, soldiers);
+},2000);
 
 game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
 
