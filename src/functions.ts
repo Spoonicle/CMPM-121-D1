@@ -1,18 +1,17 @@
 export interface Planet {
-  name: string,
-  cost: number,
-  image: string,
-  soldier_count: number,
-  conquered: boolean,
-  display: boolean,
+  name: string;
+  cost: number;
+  image: string;
+  soldier_count: number;
+  conquered: boolean;
+  display: boolean;
 }
 
 export function update_planet_display(
   planets: Planet[],
   planet_images: HTMLImageElement[],
-  soldiers: number
+  soldiers: number,
 ) {
-
   for (let i = 0; i < planets.length; i++) {
     const planet = planets[i];
     const planet_image = planet_images[i];
@@ -28,7 +27,7 @@ export function update_planet_display(
       // show planet but grayed/locked
       planet_image.style.display = "block";
       planet_image.style.filter = "grayscale(100%)";
-    } else { 
+    } else {
       // show planet
       planet_image.style.display = "block";
       planet_image.style.filter = "none";
