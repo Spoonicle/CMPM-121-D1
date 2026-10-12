@@ -2,7 +2,6 @@ export interface Planet {
   name: string;
   cost: number;
   image: string;
-  soldier_count: number;
   conquered: boolean;
   display: boolean;
   auto_soldier: number;
@@ -40,10 +39,10 @@ export function update_planet_display(
 
 export function planet_auto_click(
   planets: Planet[],
-  soldiers,
+  soldiers: number,
 ) {
   for (let i = 0; i < planets.length; i++) {
-    let current_planet = planets[i];
+    const current_planet = planets[i];
 
     if (!current_planet.conquered) continue;
 
@@ -56,7 +55,7 @@ export function planet_auto_loss(
   planets: Planet[],
 ) {
   for (let i = 0; i < planets.length; i++) {
-    let current_planet = planets[i];
+    const current_planet = planets[i];
 
     if (!current_planet.conquered) continue;
 

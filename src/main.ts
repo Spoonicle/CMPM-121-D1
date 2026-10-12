@@ -32,7 +32,7 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 1,
-    soldier_count: 0,
+    auto_soldier_loss: 0,
   },
   {
     name: "Lava",
@@ -42,7 +42,6 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 2,
-    soldier_count: 0,
     auto_soldier_loss: 4,
   },
   {
@@ -53,7 +52,6 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 3,
-    soldier_count: 0,
     auto_soldier_loss: 6,
   },
   {
@@ -64,7 +62,6 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 4,
-    soldier_count: 0,
     auto_soldier_loss: 8,
   },
   {
@@ -75,7 +72,6 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 5,
-    soldier_count: 0,
     auto_soldier_loss: 10,
   },
 ];
@@ -181,7 +177,7 @@ for (let i = 0; i < planets.length; i++) {
       console.log(`Not enough soldiers`);
       return;
     }
-    current_planet = i;
+    let current_planet = i;
     console.log(`Current selected planet is: ${planets[i].name}`);
   });
 
