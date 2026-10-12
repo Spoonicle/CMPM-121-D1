@@ -183,3 +183,9 @@ body {
 .planet:hover {
   transform: scale(1.15);
 }
+
+.planet_selected {
+  transform: scale(1.15);
+  box-shadow: 0 0 12px #000000;
+}
+
