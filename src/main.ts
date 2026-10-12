@@ -26,13 +26,14 @@ let soldiers = 0;
 const planets: Planet[] = [
   {
     name: "Terran",
-    cost: 100,
+    cost: 10,
     image: Terran,
     soldier_count: 0,
     conquered: false,
     display: false,
     auto_soldier: 1,
-    soldier_count: 0,
+    auto_soldier_loss: 2,
+    conquer_count: 0,
   },
   {
     name: "Lava",
@@ -42,8 +43,8 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 2,
-    soldier_count: 0,
     auto_soldier_loss: 4,
+    conquer_count: 0,
   },
   {
     name: "Ice",
@@ -53,8 +54,8 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 3,
-    soldier_count: 0,
     auto_soldier_loss: 6,
+    conquer_count: 0,
   },
   {
     name: "Baren",
@@ -64,8 +65,8 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 4,
-    soldier_count: 0,
     auto_soldier_loss: 8,
+    conquer_count: 0,
   },
   {
     name: "Black Hole",
@@ -75,8 +76,8 @@ const planets: Planet[] = [
     conquered: false,
     display: false,
     auto_soldier: 5,
-    soldier_count: 0,
     auto_soldier_loss: 10,
+    conquer_count: 0,
   },
 ];
 
@@ -134,6 +135,7 @@ conquer_button.addEventListener("click", () => {
   soldiers -= selected_planet.cost;
   selected_planet.soldier_count += selected_planet.cost;
   selected_planet.conquered = true;
+  selected_planet.conquer_count++;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
   update_planet_display(planets, planet_images, soldiers);
   console.log(`${selected_planet.name} has been conquered`);
@@ -201,9 +203,8 @@ setInterval(() => {
 
 setInterval(() => {
   planet_auto_loss(planets);
+  update_planet_display(planets, planet_images, soldiers);
 }, 5000);
-
-setInterval;
 
 game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
 

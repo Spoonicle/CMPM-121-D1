@@ -6,8 +6,15 @@ export interface Planet {
   conquered: boolean;
   display: boolean;
   auto_soldier: number;
-  soldier_count: number;
   auto_soldier_loss: number;
+  conquer_count: number,
+}
+
+function reset_planet(planet: Planet) {
+  planet.conquered = false;
+  planet.soldier_count = 0;
+
+  planet.cost *= (planet.conquer_count + 1);
 }
 
 export function update_planet_display(
@@ -59,10 +66,15 @@ export function planet_auto_loss(
     let current_planet = planets[i];
 
     if (!current_planet.conquered) continue;
-
+    
     current_planet.soldier_count -= current_planet.auto_soldier_loss;
-    console.log(
-      `${current_planet.name} soldier count: ${current_planet.soldier_count}`,
-    );
+
+    if (current_planet.soldier_count <= (current_planet.cost / 2)) {
+      console.log(`Lost the planet ${current_planet.name}`)
+      reset_planet(current_planet);
+      continue;
+    }
+
+    console.log( `${current_planet.name} soldier count: ${current_planet.soldier_count}`);
   }
 }
