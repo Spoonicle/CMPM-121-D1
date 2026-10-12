@@ -8,7 +8,11 @@ import Lava from "./assets/Lava.png";
 import Baren from "./assets/Baren.png";
 import Black_hole from "./assets/Black_hole.png";
 
-import { update_planet_display, planet_auto_click } from "./functions.ts";
+import {
+  planet_auto_click,
+  planet_auto_loss,
+  update_planet_display,
+} from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -27,7 +31,7 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 10,
+    auto_soldier: 1,
     soldier_count: 0,
   },
   {
@@ -37,8 +41,9 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 20,
+    auto_soldier: 2,
     soldier_count: 0,
+    auto_soldier_loss: 4,
   },
   {
     name: "Ice",
@@ -47,8 +52,9 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 30,
+    auto_soldier: 3,
     soldier_count: 0,
+    auto_soldier_loss: 6,
   },
   {
     name: "Baren",
@@ -57,8 +63,9 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 40,
+    auto_soldier: 4,
     soldier_count: 0,
+    auto_soldier_loss: 8,
   },
   {
     name: "Black Hole",
@@ -67,8 +74,9 @@ const planets: Planet[] = [
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 50,
+    auto_soldier: 5,
     soldier_count: 0,
+    auto_soldier_loss: 10,
   },
 ];
 
@@ -124,6 +132,7 @@ conquer_button.addEventListener("click", () => {
   }
 
   soldiers -= selected_planet.cost;
+  selected_planet.soldier_count += selected_planet.cost;
   selected_planet.conquered = true;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
   update_planet_display(planets, planet_images, soldiers);
@@ -188,7 +197,13 @@ setInterval(() => {
   soldier_count.textContent = `Soldiers: ${soldiers}`;
 
   update_planet_display(planets, planet_images, soldiers);
-},2000);
+}, 2000);
+
+setInterval(() => {
+  planet_auto_loss(planets);
+}, 5000);
+
+setInterval;
 
 game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
 

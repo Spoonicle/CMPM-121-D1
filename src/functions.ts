@@ -5,8 +5,9 @@ export interface Planet {
   soldier_count: number;
   conquered: boolean;
   display: boolean;
-  auto_soldier: number,
-  soldier_count: number,
+  auto_soldier: number;
+  soldier_count: number;
+  auto_soldier_loss: number;
 }
 
 export function update_planet_display(
@@ -49,4 +50,19 @@ export function planet_auto_click(
     soldiers += current_planet.auto_soldier;
   }
   return soldiers;
+}
+
+export function planet_auto_loss(
+  planets: Planet[],
+) {
+  for (let i = 0; i < planets.length; i++) {
+    let current_planet = planets[i];
+
+    if (!current_planet.conquered) continue;
+
+    current_planet.soldier_count -= current_planet.auto_soldier_loss;
+    console.log(
+      `${current_planet.name} soldier count: ${current_planet.soldier_count}`,
+    );
+  }
 }
