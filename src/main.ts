@@ -8,7 +8,11 @@ import Lava from "./assets/Lava.png";
 import Baren from "./assets/Baren.png";
 import Black_hole from "./assets/Black_hole.png";
 
-import { update_planet_display, planet_auto_click, planet_auto_loss } from "./functions.ts";
+import {
+  planet_auto_click,
+  planet_auto_loss,
+  update_planet_display,
+} from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -199,7 +203,7 @@ setInterval(() => {
   planet_auto_loss(planets);
 }, 5000);
 
-setInterval
+setInterval;
 
 game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
 
