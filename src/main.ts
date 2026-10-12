@@ -177,7 +177,7 @@ for (let i = 0; i < planets.length; i++) {
       console.log(`Not enough soldiers`);
       return;
     }
-    let current_planet = i;
+    current_planet = i;
     console.log(`Current selected planet is: ${planets[i].name}`);
   });
 
