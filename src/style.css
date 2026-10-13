@@ -58,6 +58,13 @@ body {
   text-align: center;
 }
 
+.soldier_sprite {
+  width: 116px;
+  height: 67px;
+  background-size: no-repeat;
+  background-position: pixelated;
+}
+
 .camp {
   border: 2px dashed #4a4a5a;
   border-radius: 12px;
