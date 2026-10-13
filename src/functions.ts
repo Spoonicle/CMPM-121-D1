@@ -46,6 +46,17 @@ export function update_planet_display(
   }
 }
 
+export function render_camp(
+  soldier_count: number,
+  spriteUrl: string,
+  camp: HTMLDivElement,
+) {
+  camp.innerHTML = "";
+  for (let i = 0; i < soldier_count; i++) {
+    camp.append(create_soldier_sprite(spriteUrl));
+  }
+}
+
 export function planet_auto_click(
   planets: Planet[],
   soldiers: number,

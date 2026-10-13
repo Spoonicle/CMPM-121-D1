@@ -173,6 +173,8 @@ body {
   border: 1px solid #3d3d4e;
   border-radius: 12px;
   padding: 16px 8px;
+  overflow: auto;
+  height: 75%;
 }
 
 .planets_title {
@@ -195,6 +197,6 @@ body {
 }
 
 .planet_selected {
-  transform: scale(1.15);
-  box-shadow: 0 0 12px #000000;
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
 }
