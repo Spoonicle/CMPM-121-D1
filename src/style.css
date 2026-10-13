@@ -37,8 +37,10 @@ body {
   justify-content: center;
 }
 
-.soldier_camp,
-.camp {
+.soldier_camp {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
   height: 320px;
   border: 2px dashed #4a4a5a;
   border-radius: 12px;
@@ -63,6 +65,7 @@ body {
   height: 67px;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  margin: -14px -42px;
 }
 
 .camp {

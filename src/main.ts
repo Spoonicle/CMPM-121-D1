@@ -13,8 +13,8 @@ import {
   create_soldier_sprite,
   planet_auto_click,
   planet_auto_loss,
-  update_planet_display,
   soldier_transport,
+  update_planet_display,
 } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
@@ -24,10 +24,6 @@ const game = document.createElement("div");
 game.className = "game";
 
 let soldiers = 0;
-
-const soldier_sprite = document.createElement("div");
-soldier_sprite.className = "soldier_sprite";
-soldier_sprite.style.backgroundImage = `url(${BlackSoldier})`;
 
 // set array of planets
 const planets: Planet[] = [
@@ -110,11 +106,11 @@ const transport_button = document.createElement("button");
 transport_button.className = "action_btn transport_button";
 transport_button.textContent = "Transport";
 
-let current_planet: number | null = null;;
+let current_planet: number | null = null;
 transport_button.addEventListener("click", () => {
   if (current_planet === null) return;
 
-  let selected_planet = planets[current_planet];
+  const selected_planet = planets[current_planet];
 
   if (!selected_planet.conquered) return;
 
@@ -124,7 +120,9 @@ transport_button.addEventListener("click", () => {
   update_planet_display(planets, planet_images, soldiers);
 
   console.log("Transport clicked");
-  console.log(`${selected_planet.name} has ${selected_planet.soldier_count} soldiers`)
+  console.log(
+    `${selected_planet.name} has ${selected_planet.soldier_count} soldiers`,
+  );
 });
 
 const enlist_button = document.createElement("button");
@@ -212,7 +210,7 @@ for (let i = 0; i < planets.length; i++) {
   planet.addEventListener("click", () => {
     current_planet = i;
 
-    for (let img of planet_images) {
+    for (const img of planet_images) {
       img.classList.remove("selected");
     }
 
