@@ -69,6 +69,13 @@ export function planet_auto_click(
   return soldiers;
 }
 
+export function barracks_auto_recruit(
+  barracks_bought: number,
+  soldiers: number,
+): number {
+  return soldiers + barracks_bought;
+}
+
 export function planet_auto_loss(planets: Planet[]) {
   for (let i = 0; i < planets.length; i++) {
     const current_planet = planets[i];

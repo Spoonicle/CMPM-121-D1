@@ -11,6 +11,7 @@ import BlackSoldier from "./assets/Black_Soldier.png";
 
 import {
   barracks,
+  barracks_auto_recruit,
   create_soldier_sprite,
   general,
   pilot,
@@ -30,33 +31,33 @@ game.className = "game";
 let soldiers = 0;
 
 let barracks_bought = 0;
-let barracks_cost = 125;
+let barracks_cost = 30;
 let recruiting_soldier_count = 1;
 
 let pilots_bought = 0;
 let transporting_soldier_count = 0;
-let pilot_cost = 175;
+let pilot_cost = 155;
 
-const general_cost = 10000;
+const general_cost = 1000;
 let can_auto_conquer = false;
 
 // set array of planets
 const planets: Planet[] = [
   {
     name: "Terran",
-    cost: 10,
+    cost: 50,
     image: Terran,
     soldier_count: 0,
     conquered: false,
     display: false,
-    auto_soldier: 1,
-    auto_soldier_loss: 2,
+    auto_soldier: 2,
+    auto_soldier_loss: 1,
     conquer_count: 0,
     soldier_transport_count: 10,
   },
   {
     name: "Lava",
-    cost: 120,
+    cost: 150,
     image: Lava,
     soldier_count: 0,
     conquered: false,
@@ -68,7 +69,7 @@ const planets: Planet[] = [
   },
   {
     name: "Ice",
-    cost: 130,
+    cost: 300,
     image: Ice,
     soldier_count: 0,
     conquered: false,
@@ -80,7 +81,7 @@ const planets: Planet[] = [
   },
   {
     name: "Baren",
-    cost: 140,
+    cost: 200,
     image: Baren,
     soldier_count: 0,
     conquered: false,
@@ -92,7 +93,7 @@ const planets: Planet[] = [
   },
   {
     name: "Black Hole",
-    cost: 150,
+    cost: 300,
     image: Black_hole,
     soldier_count: 0,
     conquered: false,
@@ -389,6 +390,7 @@ update_planet_display(planets, planet_images, soldiers);
 
 setInterval(() => {
   soldiers = planet_auto_click(planets, soldiers);
+  soldiers = barracks_auto_recruit(barracks_bought, soldiers);
 
   if (can_auto_conquer) {
     for (let i = 0; i < planets.length; i++) {
