@@ -35,7 +35,7 @@ let transport_solider_count = 0;
 let init_pilot_cost = 175;
 
 let general_cost = 10000;
-let can_auto_conquer = false;
+let  can_auto_conquer = false;
 
 // set array of planets
 const planets: Planet[] = [
