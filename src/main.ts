@@ -7,8 +7,10 @@ import Ice from "./assets/Ice.png";
 import Lava from "./assets/Lava.png";
 import Baren from "./assets/Baren.png";
 import Black_hole from "./assets/Black_hole.png";
+import BlackSoldier from "./assets/Black_Soldier.png";
 
 import {
+  create_soldier_sprite,
   planet_auto_click,
   planet_auto_loss,
   update_planet_display,
@@ -22,6 +24,10 @@ const game = document.createElement("div");
 game.className = "game";
 
 let soldiers = 0;
+
+const soldier_sprite = document.createElement("div");
+soldier_sprite.className = "soldier_sprite";
+soldier_sprite.style.backgroundImage = `url(${BlackSoldier})`;
 
 // set array of planets
 const planets: Planet[] = [
@@ -133,6 +139,7 @@ conquer_button.textContent = "Conquer";
 enlist_button.addEventListener("click", () => {
   soldiers++;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
+  soldier_camp.append(create_soldier_sprite(BlackSoldier));
   update_planet_display(planets, planet_images, soldiers);
 });
 
