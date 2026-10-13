@@ -129,7 +129,7 @@ let current_planet: number | null = null;
 let current_upgrade: number | null = null;
 
 function render_current_camp() {
-  if (current_planet !== null && planets[current_planet].conquered) {
+  if (current_planet !== null) {
     render_camp(
       planets[current_planet].soldier_count,
       BlackSoldier,
@@ -195,7 +195,7 @@ enlist_button.addEventListener("click", () => {
 });
 
 function update_soldier_display() {
-  if (current_planet !== null && planets[current_planet].conquered) {
+  if (current_planet !== null) {
     const p = planets[current_planet];
     soldier_count.textContent = `${p.name} soldier count: ${p.soldier_count}`;
   } else {
@@ -229,6 +229,25 @@ function conquer_planet(planet_index: number) {
   console.log(`${selected_planet.name} has been conquered`);
 }
 
+conquer_button.addEventListener("click", () => {
+  if (current_planet === null) {
+    const target = planets.findIndex(
+      (p) => !p.conquered && soldiers >= p.cost,
+    );
+    if (target !== -1) {
+      current_planet = target;
+      planet_images.forEach((img, idx) => {
+        img.classList.toggle("selected_planet", idx === target);
+      });
+      conquer_planet(target);
+    } else {
+      console.log("No planet selected or affordable to conquer");
+    }
+    return;
+  }
+  conquer_planet(current_planet);
+});
+
 action_buttons.append(transport_button, enlist_button, conquer_button);
 
 camp_section.append(soldier_camp, soldier_count);
@@ -255,7 +274,8 @@ function update_upgrade_labels() {
 
 const upgrade_actions = [
   //0: Barracks
-  () => {
+  (): boolean => {
+    if (soldiers < barracks_cost) return false;
     ({ soldiers, barracks_bought, barracks_cost, recruiting_soldier_count } =
       barracks(
         soldiers,
@@ -263,22 +283,25 @@ const upgrade_actions = [
         barracks_cost,
         recruiting_soldier_count,
       ));
+    return true;
   },
   //1: Pilot
-  () => {
+  (): boolean => {
+    if (soldiers < pilot_cost) return false;
     ({ soldiers, pilots_bought, pilot_cost, transporting_soldier_count } =
       pilot(soldiers, pilots_bought, pilot_cost, transporting_soldier_count));
+    return true;
   },
   //2, General
-  () => {
-    if (!can_auto_conquer && soldiers >= general_cost) {
-      //soldiers -= general_cost;
-      can_auto_conquer = general(
-        soldiers + general_cost,
-        general_cost,
-        can_auto_conquer,
-      );
+  (): boolean => {
+    if (
+      !can_auto_conquer && general(soldiers, general_cost, can_auto_conquer)
+    ) {
+      soldiers -= general_cost;
+      can_auto_conquer = true;
+      return true;
     }
+    return false;
   },
 ];
 
@@ -289,22 +312,24 @@ upgrades.forEach((name, i) => {
   upgrade.textContent = name;
 
   upgrade.addEventListener("click", () => {
-    current_upgrade = i;
+    const upgraded = upgrade_actions[i]();
 
     for (const upgrade_item of upgrade_items) {
       upgrade_item.classList.remove("selected");
     }
 
-    upgrade.classList.add("selected");
-
-    upgrade_actions[i]();
+    if (upgraded) {
+      current_upgrade = i;
+      upgrade.classList.add("selected");
+      console.log(`Successfully upgraded: ${upgrades[current_upgrade]}`);
+    } else {
+      console.log(`Cannot afford upgrade: ${upgrades[i]}`);
+    }
 
     update_upgrade_labels();
     update_soldier_display();
     update_planet_display(planets, planet_images, soldiers);
     render_current_camp();
-
-    console.log(`Selected upgrade is: ${upgrades[current_upgrade]}`);
   });
 
   upgrade_items.push(upgrade);
@@ -332,6 +357,16 @@ for (let i = 0; i < planets.length; i++) {
   planet.alt = planets[i].name;
 
   planet.addEventListener("click", () => {
+    if (current_planet === i) {
+      current_planet = null;
+      for (const img of planet_images) {
+        img.classList.remove("selected_planet");
+      }
+      render_current_camp();
+      update_soldier_display();
+      return;
+    }
+
     current_planet = i;
 
     for (const img of planet_images) {
@@ -341,13 +376,6 @@ for (let i = 0; i < planets.length; i++) {
     planet.classList.add("selected_planet");
 
     render_current_camp();
-
-    if (planets[i].conquered) {
-      render_camp(planets[i].soldier_count, BlackSoldier, soldier_camp);
-    } else {
-      render_camp(soldiers, BlackSoldier, soldier_camp);
-    }
-
     update_soldier_display();
 
     console.log(`Current selected planet is: ${planets[i].name}`);
