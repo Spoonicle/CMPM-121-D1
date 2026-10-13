@@ -12,6 +12,7 @@ import {
   planet_auto_click,
   planet_auto_loss,
   update_planet_display,
+  soldier_transport,
 } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
@@ -34,6 +35,7 @@ const planets: Planet[] = [
     auto_soldier: 1,
     auto_soldier_loss: 2,
     conquer_count: 0,
+    soldier_transport_count: 10,
   },
   {
     name: "Lava",
@@ -45,6 +47,7 @@ const planets: Planet[] = [
     auto_soldier: 2,
     auto_soldier_loss: 4,
     conquer_count: 0,
+    soldier_transport_count: 10,
   },
   {
     name: "Ice",
@@ -56,6 +59,7 @@ const planets: Planet[] = [
     auto_soldier: 3,
     auto_soldier_loss: 6,
     conquer_count: 0,
+    soldier_transport_count: 10,
   },
   {
     name: "Baren",
@@ -67,6 +71,7 @@ const planets: Planet[] = [
     auto_soldier: 4,
     auto_soldier_loss: 8,
     conquer_count: 0,
+    soldier_transport_count: 10,
   },
   {
     name: "Black Hole",
@@ -78,6 +83,7 @@ const planets: Planet[] = [
     auto_soldier: 5,
     auto_soldier_loss: 10,
     conquer_count: 0,
+    soldier_transport_count: 10,
   },
 ];
 
@@ -97,8 +103,22 @@ action_buttons.className = "action_buttons";
 const transport_button = document.createElement("button");
 transport_button.className = "action_btn transport_button";
 transport_button.textContent = "Transport";
+
+let current_planet: number | null = null;;
 transport_button.addEventListener("click", () => {
+  if (current_planet === null) return;
+
+  let selected_planet = planets[current_planet];
+
+  if (!selected_planet.conquered) return;
+
+  soldiers = soldier_transport(selected_planet, soldiers);
+  soldier_count.textContent = `Soldiers: ${soldiers}`;
+
+  update_planet_display(planets, planet_images, soldiers);
+
   console.log("Transport clicked");
+  console.log(`${selected_planet.name} has ${selected_planet.soldier_count} soldiers`)
 });
 
 const enlist_button = document.createElement("button");
@@ -116,8 +136,9 @@ enlist_button.addEventListener("click", () => {
   update_planet_display(planets, planet_images, soldiers);
 });
 
-let current_planet = 0;
 conquer_button.addEventListener("click", () => {
+  if (current_planet === null) return;
+
   const selected_planet = planets[current_planet];
 
   if (selected_planet.conquered) {
@@ -136,8 +157,11 @@ conquer_button.addEventListener("click", () => {
   selected_planet.soldier_count += selected_planet.cost;
   selected_planet.conquered = true;
   selected_planet.conquer_count++;
+
   soldier_count.textContent = `Soldiers: ${soldiers}`;
+
   update_planet_display(planets, planet_images, soldiers);
+
   console.log(`${selected_planet.name} has been conquered`);
 });
 
@@ -179,11 +203,14 @@ for (let i = 0; i < planets.length; i++) {
   planet.alt = planets[i].name;
 
   planet.addEventListener("click", () => {
-    if (soldiers < planets[i].cost) {
-      console.log(`Not enough soldiers`);
-      return;
-    }
     current_planet = i;
+
+    for (let img of planet_images) {
+      img.classList.remove("selected");
+    }
+
+    planet.classList.add("selected");
+
     console.log(`Current selected planet is: ${planets[i].name}`);
   });
 

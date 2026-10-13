@@ -8,6 +8,7 @@ export interface Planet {
   auto_soldier: number;
   auto_soldier_loss: number;
   conquer_count: number,
+  soldier_transport_count: number,
 }
 
 function reset_planet(planet: Planet) {
@@ -47,8 +48,8 @@ export function update_planet_display(
 
 export function planet_auto_click(
   planets: Planet[],
-  soldiers,
-) {
+  soldiers: number,
+): number {
   for (let i = 0; i < planets.length; i++) {
     let current_planet = planets[i];
 
@@ -77,4 +78,17 @@ export function planet_auto_loss(
 
     console.log( `${current_planet.name} soldier count: ${current_planet.soldier_count}`);
   }
+}
+
+export function soldier_transport(
+  planet: Planet,
+  soldiers: number): number {
+
+    if (soldiers < planet.soldier_transport_count) return soldiers;
+
+    soldiers -= planet.soldier_transport_count;
+
+    planet.soldier_count += planet.soldier_transport_count;
+
+    return soldiers;
 }
