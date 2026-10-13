@@ -16,6 +16,9 @@ import {
   render_camp,
   soldier_transport,
   update_planet_display,
+  barracks,
+  pilot,
+  general,
 } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
@@ -25,6 +28,17 @@ const game = document.createElement("div");
 game.className = "game";
 
 let soldiers = 0;
+
+let barracks_bought = 0;
+let init_barracks_cost = 125;
+let recruting_solider_count = 1;
+
+let pilots_bought = 0;
+let transport_solider_count = 0;
+let init_pilot_cost = 175;
+
+let general_cost = 10000;
+let can_auto_conquer = false;
 
 // set array of planets
 const planets: Planet[] = [
@@ -90,6 +104,9 @@ const planets: Planet[] = [
   },
 ];
 
+const upgrades = ["Barracks", "Pilot", "General"];
+const upgrade_items: HTMLDivElement[] = [];
+
 const camp_section = document.createElement("div");
 camp_section.className = "camp_section";
 
@@ -108,9 +125,11 @@ transport_button.className = "action_btn transport_button";
 transport_button.textContent = "Transport";
 
 let current_planet: number | null = null;
+
+let current_upgrade: number | null = null;
+
 transport_button.addEventListener("click", () => {
   if (current_planet === null) return;
-
   const selected_planet = planets[current_planet];
 
   if (!selected_planet.conquered) return;
@@ -139,6 +158,18 @@ enlist_button.textContent = "Enlist";
 const conquer_button = document.createElement("button");
 conquer_button.className = "action_btn conquer_button";
 conquer_button.textContent = "Conquer";
+
+const barracks_button = document.createElement("button");
+barracks_button.className = "action_btn barracks_button";
+barracks_button.textContent = "Barracks";
+
+const pilot_button = document.createElement("button");
+pilot_button.className = "action_btn pilot_button";
+pilot_button.textContent = "Pilot";
+
+const general_button = document.createElement("button");
+general_button.className = "action_btn general_button";
+general_button.textContent = "General";
 
 // add soldier and update text
 enlist_button.addEventListener("click", () => {
@@ -207,11 +238,26 @@ upgrades_title.className = "upgrades_title";
 upgrades_title.textContent = "Upgrades:";
 upgrades_shelf.append(upgrades_title);
 
-["Barracks", "Pilot", "General"].forEach((name) => {
-  const item = document.createElement("div");
-  item.className = "upgrade_item";
-  item.textContent = name;
-  upgrades_shelf.append(item);
+upgrades.forEach((name, i) => {
+  const upgrade = document.createElement("div");
+
+  upgrade.className = "upgrade_item";
+  upgrade.textContent = name;
+
+  upgrade.addEventListener("click", () => {
+    current_upgrade = i;
+
+    for (const upgrade_item of upgrade_items) {
+      upgrade_item.classList.remove("selected");
+    }
+
+    upgrade.classList.add("selected");
+
+    console.log(`Selected upgrade is: ${upgrades[current_upgrade]}`)
+  })
+  
+  upgrade_items.push(upgrade);
+  upgrades_shelf.append(upgrade);
 });
 
 const planet_container = document.createElement("div");

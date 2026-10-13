@@ -120,5 +120,87 @@ export function soldier_transport(
 
   planet.soldier_count += planet.soldier_transport_count;
 
+  planet.soldier_count += planet.soldier_transport_count;
+
   return soldiers;
+}
+
+export function barracks(
+  soldiers: number,
+  barracks_bought: number,
+  barracks_cost: number,
+  recruting_solider_count: number,
+) {
+  if (soldiers < barracks_cost) {
+    return {
+      soldiers,
+      barracks_bought,
+      barracks_cost,
+      recruiting_soldier_count,
+    };
+  }
+
+  soldiers -= barracks_cost;
+
+  barracks_bought++;
+
+  barracks_cost = Math.ceil(barracks_cost * 1.25);
+
+  recruting_solider_count++;
+
+  console.log(
+    `Bought a barracks. Barracks count is: ${recruting_solider_count}, cost is now: ${barracks_cost}`,
+  );
+
+  return {
+    soldiers,
+    barracks_bought,
+    barracks_cost,
+    recruiting_soldier_count,
+  };
+}
+
+export function pilot(
+  soldiers: number,
+  pilots_bought: number,
+  pilot_cost: number,
+  transporting_solider_count: number,
+) {
+  if (soliders < pilot_cost) {
+    return (
+      soldiers, pilots_bought, pilot_cost, transport_solider_count
+    );
+  }
+
+  soliders -= pilot_cost;
+
+  pilots_bought++;
+
+  pilot_cost = Math.ceil(barracks_cost * 1.25);
+
+  transporting_solider_count++;
+
+  console.log(
+    `Bought a pilot. Pilot count is: ${transporting_solider_count}, cost is now: ${pilot_cost}`,
+  );
+
+  return {
+    soldiers,
+    pilots_bought,
+    pilot_cost,
+    transport_solider_count,
+  };
+}
+
+export function general(
+  soliders: number,
+  general_cost: number,
+  can_auto_conquer: boolean,
+): boolean {
+  if (soldiers < general_cost) {
+    can_auto_conquer = false;
+    return can_auto_conquer;
+  }
+  can_auto_conquer = true;
+  return can_auto_conquer;
 }
