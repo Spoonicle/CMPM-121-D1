@@ -61,8 +61,8 @@ body {
 .soldier_sprite {
   width: 116px;
   height: 67px;
-  background-size: no-repeat;
-  background-position: pixelated;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
 }
 
 .camp {

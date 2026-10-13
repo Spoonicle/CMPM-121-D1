@@ -10,6 +10,7 @@ import Black_hole from "./assets/Black_hole.png";
 import BlackSoldier from "./assets/Black_Soldier.png";
 
 import {
+  create_soldier_sprite,
   planet_auto_click,
   planet_auto_loss,
   update_planet_display,
@@ -91,18 +92,6 @@ soldier_count.textContent = "Soldiers:";
 const soldier_camp = document.createElement("div");
 soldier_camp.className = "soldier_camp";
 
-soldier_camp.append(soldier_sprite);
-
-let spriteFrame = 0;
-const spriteRow = 0;
-const spriteFrameCount = 3;
-
-setInterval(() => {
-  spriteFrame = (spriteFrame + 1) % spriteFrameCount;
-  soldier_sprite.style.backgroundPositionX = `${-(spriteFrame * 116)}px`;
-  soldier_sprite.style.backgroundPositionY = `${-(spriteRow * 67)}px`;
-}, 150);
-
 const action_buttons = document.createElement("div");
 action_buttons.className = "action_buttons";
 
@@ -125,6 +114,7 @@ conquer_button.textContent = "Conquer";
 enlist_button.addEventListener("click", () => {
   soldiers++;
   soldier_count.textContent = `Soldiers: ${soldiers}`;
+  soldier_camp.append(create_soldier_sprite(BlackSoldier));
   update_planet_display(planets, planet_images, soldiers);
 });
 
