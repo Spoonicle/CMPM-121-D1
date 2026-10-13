@@ -22,26 +22,32 @@ export function update_planet_display(
   planets: Planet[],
   planet_images: HTMLImageElement[],
   soldiers: number,
+  planet_labels?: HTMLElement[],
 ) {
   for (let i = 0; i < planets.length; i++) {
     const planet = planets[i];
     const planet_image = planet_images[i];
+    const label = planet_labels ? planet_labels[i] : null;
 
     if (planet.conquered) {
       // show already conquered planet
       planet_image.style.display = "block";
       planet_image.style.filter = "none";
+      if (label) label.textContent = "";
     } else if (soldiers < planet.cost * 0.5) {
       // hide planet
       planet_image.style.display = "none";
+      if (label) label.textContent = "";
     } else if (soldiers < planet.cost) {
       // show planet but grayed/locked
       planet_image.style.display = "block";
       planet_image.style.filter = "grayscale(100%)";
+      if (label) label.textContent = `Cost: ${planet.cost}`;
     } else {
       // show planet
       planet_image.style.display = "block";
       planet_image.style.filter = "none";
+      if (label) label.textContent = "";
     }
   }
 }
@@ -74,6 +80,37 @@ export function barracks_auto_recruit(
   soldiers: number,
 ): number {
   return soldiers + barracks_bought;
+}
+
+export function pilot_auto_transport(
+  planets: Planet[],
+  soldiers: number,
+  transporting_soldier_count: number,
+): number {
+  if (transporting_soldier_count <= 0 || soldiers <= 0) return soldiers;
+
+  const planetsNeedingReinforcement = planets
+    .filter((p) => p.conquered && p.soldier_count < p.cost)
+    .sort((a, b) => a.soldier_count - b.soldier_count);
+
+  if (planetsNeedingReinforcement.length === 0) return soldiers;
+
+  let availableTransfer = transporting_soldier_count;
+
+  for (const planet of planetsNeedingReinforcement) {
+    if (availableTransfer <= 0 || soldiers <= 0) break;
+
+    const deficit = planet.cost - planet.soldier_count;
+    const toSend = Math.min(deficit, availableTransfer, soldiers);
+
+    if (toSend > 0) {
+      soldiers -= toSend;
+      planet.soldier_count += toSend;
+      availableTransfer -= toSend;
+    }
+  }
+
+  return soldiers;
 }
 
 export function planet_auto_loss(planets: Planet[]) {

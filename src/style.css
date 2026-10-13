@@ -187,6 +187,12 @@ body {
   color: #94a3b8;
 }
 
+.planet_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .planet {
   width: 64px;
   height: 64px;
@@ -203,4 +209,9 @@ body {
 .selected_planet {
   outline: 3px solid #facc15;
   outline-offset: 3px;
+}
+
+.planet_cost {
+  font-size: 0.9rem;
+  color: #94a3b8;
 }

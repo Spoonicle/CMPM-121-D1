@@ -15,6 +15,7 @@ import {
   create_soldier_sprite,
   general,
   pilot,
+  pilot_auto_transport,
   planet_auto_click,
   planet_auto_loss,
   render_camp,
@@ -31,14 +32,14 @@ game.className = "game";
 let soldiers = 0;
 
 let barracks_bought = 0;
-let barracks_cost = 30;
+let barracks_cost = 25;
 let recruiting_soldier_count = 1;
 
 let pilots_bought = 0;
 let transporting_soldier_count = 0;
-let pilot_cost = 155;
+let pilot_cost = 150;
 
-const general_cost = 1000;
+const general_cost = 500;
 let can_auto_conquer = false;
 
 // set array of planets
@@ -81,7 +82,7 @@ const planets: Planet[] = [
   },
   {
     name: "Baren",
-    cost: 200,
+    cost: 500,
     image: Baren,
     soldier_count: 0,
     conquered: false,
@@ -93,7 +94,7 @@ const planets: Planet[] = [
   },
   {
     name: "Black Hole",
-    cost: 300,
+    cost: 1000,
     image: Black_hole,
     soldier_count: 0,
     conquered: false,
@@ -129,6 +130,13 @@ let current_planet: number | null = null;
 
 let current_upgrade: number | null = null;
 
+const planet_images: HTMLImageElement[] = [];
+const planet_labels: HTMLSpanElement[] = [];
+
+function refresh_planet_display() {
+  update_planet_display(planets, planet_images, soldiers, planet_labels);
+}
+
 function render_current_camp() {
   if (current_planet !== null) {
     render_camp(
@@ -150,7 +158,7 @@ transport_button.addEventListener("click", () => {
   soldiers = soldier_transport(selected_planet, soldiers);
   update_soldier_display();
 
-  update_planet_display(planets, planet_images, soldiers);
+  refresh_planet_display();
 
   render_camp(
     planets[current_planet].soldier_count,
@@ -188,7 +196,7 @@ general_button.textContent = "General";
 enlist_button.addEventListener("click", () => {
   soldiers++;
   update_soldier_display();
-  update_planet_display(planets, planet_images, soldiers);
+  refresh_planet_display();
 
   if (current_planet === null) {
     soldier_camp.append(create_soldier_sprite(BlackSoldier));
@@ -224,7 +232,7 @@ function conquer_planet(planet_index: number) {
   selected_planet.conquer_count++;
 
   update_soldier_display();
-  update_planet_display(planets, planet_images, soldiers);
+  refresh_planet_display();
   render_current_camp();
 
   console.log(`${selected_planet.name} has been conquered`);
@@ -266,7 +274,7 @@ function update_upgrade_labels() {
     upgrade_items[0].textContent =
       `Barracks (Cost: ${barracks_cost} | Lv: ${barracks_bought})`;
     upgrade_items[1].textContent =
-      `Pilot (Cost: ${pilot_cost} | Lv1: ${pilots_bought})`;
+      `Pilot (Cost: ${pilot_cost} | Lv: ${pilots_bought})`;
     upgrade_items[2].textContent = `General (${
       can_auto_conquer ? "Owned" : `Cost: ${general_cost}`
     })`;
@@ -329,7 +337,7 @@ upgrades.forEach((name, i) => {
 
     update_upgrade_labels();
     update_soldier_display();
-    update_planet_display(planets, planet_images, soldiers);
+    refresh_planet_display();
     render_current_camp();
   });
 
@@ -347,15 +355,18 @@ planets_title.className = "planets_title";
 planets_title.textContent = "Planets:";
 planet_container.append(planets_title);
 
-const planet_images: HTMLImageElement[] = [];
-
 // adding planets to the container
 for (let i = 0; i < planets.length; i++) {
-  const planet = document.createElement("img");
+  const wrapper = document.createElement("div");
+  wrapper.className = "planet_wrapper";
 
+  const planet = document.createElement("img");
   planet.className = "planet";
   planet.src = planets[i].image;
   planet.alt = planets[i].name;
+
+  const cost_label = document.createElement("span");
+  cost_label.className = "planet_cost";
 
   planet.addEventListener("click", () => {
     if (current_planet === i) {
@@ -382,15 +393,22 @@ for (let i = 0; i < planets.length; i++) {
     console.log(`Current selected planet is: ${planets[i].name}`);
   });
 
+  wrapper.append(planet, cost_label);
   planet_images.push(planet);
-  planet_container.append(planet);
+  planet_labels.push(cost_label);
+  planet_container.append(wrapper);
 }
 
-update_planet_display(planets, planet_images, soldiers);
+refresh_planet_display();
 
 setInterval(() => {
   soldiers = planet_auto_click(planets, soldiers);
   soldiers = barracks_auto_recruit(barracks_bought, soldiers);
+  soldiers = pilot_auto_transport(
+    planets,
+    soldiers,
+    transporting_soldier_count,
+  );
 
   if (can_auto_conquer) {
     for (let i = 0; i < planets.length; i++) {
@@ -401,7 +419,7 @@ setInterval(() => {
   }
 
   update_soldier_display();
-  update_planet_display(planets, planet_images, soldiers);
+  refresh_planet_display();
   render_current_camp();
 }, 2000);
 
@@ -409,7 +427,7 @@ setInterval(() => {
   planet_auto_loss(planets);
   render_current_camp();
   update_soldier_display();
-  update_planet_display(planets, planet_images, soldiers);
+  refresh_planet_display();
 }, 5000);
 
 game.append(camp_section, upgrades_shelf, planet_container, action_buttons);
