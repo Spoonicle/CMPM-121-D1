@@ -293,7 +293,7 @@ for (let i = 0; i < planets.length; i++) {
       render_camp(soldiers, BlackSoldier, soldier_camp);
     }
 
-    update_soldier_display;
+    update_soldier_display();
 
     console.log(`Current selected planet is: ${planets[i].name}`);
   });
