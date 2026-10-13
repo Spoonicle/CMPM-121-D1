@@ -92,3 +92,15 @@ export function soldier_transport(
 
     return soldiers;
 }
+
+export function barracks() {
+  
+}
+
+export function pilot() {
+
+}
+
+export function general() {
+
+}
