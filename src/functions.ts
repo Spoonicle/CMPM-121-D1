@@ -38,16 +38,13 @@ export function update_planet_display(
       // hide planet
       planet_image.style.display = "none";
       if (label) label.textContent = "";
-    } else if (soldiers < planet.cost) {
-      // show planet but grayed/locked
-      planet_image.style.display = "block";
-      planet_image.style.filter = "grayscale(100%)";
-      if (label) label.textContent = `Cost: ${planet.cost}`;
     } else {
-      // show planet
+      // show unconquered planet (grayed if not yet affordable, full color if ready)
       planet_image.style.display = "block";
-      planet_image.style.filter = "none";
-      if (label) label.textContent = "";
+      planet_image.style.filter = soldiers < planet.cost
+        ? "grayscale(100%)"
+        : "none";
+      if (label) label.textContent = `Cost: ${planet.cost}`;
     }
   }
 }
