@@ -93,11 +93,11 @@ export function soldier_transport(
     return soldiers;
 }
 
-export function barracks() {
+export function barracks( barracks_bought: number ) {
   
 }
 
-export function pilot() {
+export function pilot( pilots_bought: number ) {
 
 }
 
