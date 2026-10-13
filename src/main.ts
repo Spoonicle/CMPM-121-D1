@@ -10,15 +10,15 @@ import Black_hole from "./assets/Black_hole.png";
 import BlackSoldier from "./assets/Black_Soldier.png";
 
 import {
+  barracks,
   create_soldier_sprite,
+  general,
+  pilot,
   planet_auto_click,
   planet_auto_loss,
   render_camp,
   soldier_transport,
   update_planet_display,
-  barracks,
-  pilot,
-  general,
 } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
@@ -253,9 +253,9 @@ upgrades.forEach((name, i) => {
 
     upgrade.classList.add("selected");
 
-    console.log(`Selected upgrade is: ${upgrades[current_upgrade]}`)
-  })
-  
+    console.log(`Selected upgrade is: ${upgrades[current_upgrade]}`);
+  });
+
   upgrade_items.push(upgrade);
   upgrades_shelf.append(upgrade);
 });
@@ -282,10 +282,10 @@ for (let i = 0; i < planets.length; i++) {
     current_planet = i;
 
     for (const img of planet_images) {
-      img.classList.remove("selected");
+      img.classList.remove("planet_selected");
     }
 
-    planet.classList.add("selected");
+    planet.classList.add("planet_selected");
 
     if (planets[i].conquered) {
       render_camp(planets[i].soldier_count, BlackSoldier, soldier_camp);

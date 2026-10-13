@@ -164,6 +164,11 @@ body {
   background: #353545;
 }
 
+.upgrade_item.selected {
+  outline: 2px solid #3b82f6;
+  background: #38384a;
+}
+
 .planets_column {
   display: flex;
   flex-direction: column;

@@ -99,7 +99,11 @@ export function create_soldier_sprite(spriteUrl: string): HTMLDivElement {
   const spriteFrameCount = 5;
   const spriteStartRow = 14;
 
-  setInterval(() => {
+  const timer = setInterval(() => {
+    if (!soldier_sprite.isConnected) {
+      clearInterval(timer);
+      return;
+    }
     spriteFrame = (spriteFrame + 1) % spriteFrameCount;
     const col = spriteFrame % 3;
     const row = spriteStartRow + Math.floor(spriteFrame / 3);
@@ -120,8 +124,6 @@ export function soldier_transport(
 
   planet.soldier_count += planet.soldier_transport_count;
 
-  planet.soldier_count += planet.soldier_transport_count;
-
   return soldiers;
 }
 
@@ -129,7 +131,7 @@ export function barracks(
   soldiers: number,
   barracks_bought: number,
   barracks_cost: number,
-  recruting_solider_count: number,
+  recruiting_soldier_count: number,
 ) {
   if (soldiers < barracks_cost) {
     return {
@@ -146,10 +148,10 @@ export function barracks(
 
   barracks_cost = Math.ceil(barracks_cost * 1.25);
 
-  recruting_solider_count++;
+  recruiting_soldier_count++;
 
   console.log(
-    `Bought a barracks. Barracks count is: ${recruting_solider_count}, cost is now: ${barracks_cost}`,
+    `Bought a barracks. Barracks count is: ${recruiting_soldier_count}, cost is now: ${barracks_cost}`,
   );
 
   return {
@@ -164,36 +166,39 @@ export function pilot(
   soldiers: number,
   pilots_bought: number,
   pilot_cost: number,
-  transporting_solider_count: number,
+  transporting_soldier_count: number,
 ) {
-  if (soliders < pilot_cost) {
-    return (
-      soldiers, pilots_bought, pilot_cost, transport_solider_count
-    );
+  if (soldiers < pilot_cost) {
+    return {
+      soldiers,
+      pilots_bought,
+      pilot_cost,
+      transporting_soldier_count,
+    };
   }
 
-  soliders -= pilot_cost;
+  soldiers -= pilot_cost;
 
   pilots_bought++;
 
-  pilot_cost = Math.ceil(barracks_cost * 1.25);
+  pilot_cost = Math.ceil(pilot_cost * 1.25);
 
-  transporting_solider_count++;
+  transporting_soldier_count++;
 
   console.log(
-    `Bought a pilot. Pilot count is: ${transporting_solider_count}, cost is now: ${pilot_cost}`,
+    `Bought a pilot. Pilot count is: ${transporting_soldier_count}, cost is now: ${pilot_cost}`,
   );
 
   return {
     soldiers,
     pilots_bought,
     pilot_cost,
-    transport_solider_count,
+    transporting_soldier_count,
   };
 }
 
 export function general(
-  soliders: number,
+  soldiers: number,
   general_cost: number,
   can_auto_conquer: boolean,
 ): boolean {
