@@ -183,7 +183,7 @@ export function pilot(
 
   pilot_cost = Math.ceil(pilot_cost * 1.25);
 
-  transporting_soldier_count++;
+  transporting_soldier_count += 5;
 
   console.log(
     `Bought a pilot. Pilot count is: ${transporting_soldier_count}, cost is now: ${pilot_cost}`,
@@ -200,12 +200,10 @@ export function pilot(
 export function general(
   soldiers: number,
   general_cost: number,
-  can_auto_conquer: boolean,
+  _can_auto_conquer: boolean,
 ): boolean {
   if (soldiers < general_cost) {
-    can_auto_conquer = false;
-    return can_auto_conquer;
+    return false;
   }
-  can_auto_conquer = true;
-  return can_auto_conquer;
+  return true;
 }

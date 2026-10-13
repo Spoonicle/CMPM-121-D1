@@ -30,14 +30,14 @@ game.className = "game";
 let soldiers = 0;
 
 let barracks_bought = 0;
-let init_barracks_cost = 125;
-let recruting_solider_count = 1;
+let barracks_cost = 125;
+let recruiting_soldier_count = 1;
 
 let pilots_bought = 0;
-let transport_solider_count = 0;
-let init_pilot_cost = 175;
+let transporting_soldier_count = 0;
+let pilot_cost = 175;
 
-let general_cost = 10000;
+const general_cost = 10000;
 let can_auto_conquer = false;
 
 // set array of planets
@@ -128,6 +128,18 @@ let current_planet: number | null = null;
 
 let current_upgrade: number | null = null;
 
+function render_current_camp() {
+  if (current_planet !== null && planets[current_planet].conquered) {
+    render_camp(
+      planets[current_planet].soldier_count,
+      BlackSoldier,
+      soldier_camp,
+    );
+  } else {
+    render_camp(soldiers, BlackSoldier, soldier_camp);
+  }
+}
+
 transport_button.addEventListener("click", () => {
   if (current_planet === null) return;
   const selected_planet = planets[current_planet];
@@ -191,19 +203,16 @@ function update_soldier_display() {
   }
 }
 
-conquer_button.addEventListener("click", () => {
-  if (current_planet === null) return;
-
-  const selected_planet = planets[current_planet];
+function conquer_planet(planet_index: number) {
+  const selected_planet = planets[planet_index];
 
   if (selected_planet.conquered) {
     console.log(`${selected_planet.name} has already been conquered`);
     return;
   }
-
   if (soldiers < selected_planet.cost) {
     console.log(
-      `Not enough troops to conquer the planet: ${selected_planet.name}`,
+      `Not enough troops to conquer planet: ${selected_planet.name} `,
     );
     return;
   }
@@ -214,17 +223,11 @@ conquer_button.addEventListener("click", () => {
   selected_planet.conquer_count++;
 
   update_soldier_display();
-
   update_planet_display(planets, planet_images, soldiers);
-
-  render_camp(
-    planets[current_planet].soldier_count,
-    BlackSoldier,
-    soldier_camp,
-  );
+  render_current_camp();
 
   console.log(`${selected_planet.name} has been conquered`);
-});
+}
 
 action_buttons.append(transport_button, enlist_button, conquer_button);
 
@@ -237,6 +240,47 @@ const upgrades_title = document.createElement("h3");
 upgrades_title.className = "upgrades_title";
 upgrades_title.textContent = "Upgrades:";
 upgrades_shelf.append(upgrades_title);
+
+function update_upgrade_labels() {
+  if (upgrade_items.length >= 3) {
+    upgrade_items[0].textContent =
+      `Barracks (Cost: ${barracks_cost} | Lv: ${barracks_bought})`;
+    upgrade_items[1].textContent =
+      `Pilot (Cost: ${pilot_cost} | Lv1: ${pilots_bought})`;
+    upgrade_items[2].textContent = `General (${
+      can_auto_conquer ? "Owned" : `Cost: ${general_cost}`
+    })`;
+  }
+}
+
+const upgrade_actions = [
+  //0: Barracks
+  () => {
+    ({ soldiers, barracks_bought, barracks_cost, recruiting_soldier_count } =
+      barracks(
+        soldiers,
+        barracks_bought,
+        barracks_cost,
+        recruiting_soldier_count,
+      ));
+  },
+  //1: Pilot
+  () => {
+    ({ soldiers, pilots_bought, pilot_cost, transporting_soldier_count } =
+      pilot(soldiers, pilots_bought, pilot_cost, transporting_soldier_count));
+  },
+  //2, General
+  () => {
+    if (!can_auto_conquer && soldiers >= general_cost) {
+      //soldiers -= general_cost;
+      can_auto_conquer = general(
+        soldiers + general_cost,
+        general_cost,
+        can_auto_conquer,
+      );
+    }
+  },
+];
 
 upgrades.forEach((name, i) => {
   const upgrade = document.createElement("div");
@@ -253,12 +297,21 @@ upgrades.forEach((name, i) => {
 
     upgrade.classList.add("selected");
 
+    upgrade_actions[i]();
+
+    update_upgrade_labels();
+    update_soldier_display();
+    update_planet_display(planets, planet_images, soldiers);
+    render_current_camp();
+
     console.log(`Selected upgrade is: ${upgrades[current_upgrade]}`);
   });
 
   upgrade_items.push(upgrade);
   upgrades_shelf.append(upgrade);
 });
+
+update_upgrade_labels();
 
 const planet_container = document.createElement("div");
 planet_container.className = "planets_column";
@@ -282,10 +335,12 @@ for (let i = 0; i < planets.length; i++) {
     current_planet = i;
 
     for (const img of planet_images) {
-      img.classList.remove("planet_selected");
+      img.classList.remove("selected_planet");
     }
 
-    planet.classList.add("planet_selected");
+    planet.classList.add("selected_planet");
+
+    render_current_camp();
 
     if (planets[i].conquered) {
       render_camp(planets[i].soldier_count, BlackSoldier, soldier_camp);
@@ -307,22 +362,22 @@ update_planet_display(planets, planet_images, soldiers);
 setInterval(() => {
   soldiers = planet_auto_click(planets, soldiers);
 
-  update_soldier_display();
+  if (can_auto_conquer) {
+    for (let i = 0; i < planets.length; i++) {
+      if (!planets[i].conquered && soldiers >= planets[i].cost) {
+        conquer_planet(i);
+      }
+    }
+  }
 
+  update_soldier_display();
   update_planet_display(planets, planet_images, soldiers);
+  render_current_camp();
 }, 2000);
 
 setInterval(() => {
   planet_auto_loss(planets);
-
-  if (current_planet !== null && planets[current_planet].conquered) {
-    render_camp(
-      planets[current_planet].soldier_count,
-      BlackSoldier,
-      soldier_camp,
-    );
-  }
-
+  render_current_camp();
   update_soldier_display();
   update_planet_display(planets, planet_images, soldiers);
 }, 5000);
