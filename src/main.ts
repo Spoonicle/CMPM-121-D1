@@ -13,6 +13,9 @@ import {
   planet_auto_loss,
   update_planet_display,
   soldier_transport,
+  barracks,
+  pilot,
+  general,
 } from "./functions.ts";
 import type { Planet } from "./functions.ts";
 
@@ -22,6 +25,17 @@ const game = document.createElement("div");
 game.className = "game";
 
 let soldiers = 0;
+
+let barracks_bought = 0;
+let init_barracks_cost = 125;
+let recruting_solider_count = 1;
+
+let pilots_bought = 0;
+let transport_solider_count = 0;
+let init_pilot_cost = 175;
+
+let general_cost = 10000;
+let can_auto_conquer = false;
 
 // set array of planets
 const planets: Planet[] = [
