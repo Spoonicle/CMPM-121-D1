@@ -2,11 +2,9 @@ export interface Planet {
   name: string;
   cost: number;
   image: string;
+  soldier_count: number;
   conquered: boolean;
   display: boolean;
-  auto_soldier: number;
-  soldier_count: number;
-  auto_soldier_loss: number;
 }
 
 export function update_planet_display(
@@ -37,31 +35,24 @@ export function update_planet_display(
   }
 }
 
-export function planet_auto_click(
-  planets: Planet[],
-  soldiers: number,
-) {
-  for (let i = 0; i < planets.length; i++) {
-    const current_planet = planets[i];
+export function create_soldier_sprite(spriteUrl: string): HTMLDivElement {
+  const soldier_sprite = document.createElement("div");
+  soldier_sprite.className = "soldier_sprite";
+  soldier_sprite.style.backgroundImage = `url(${spriteUrl})`;
+  soldier_sprite.style.backgroundPositionX = `0px`;
+  soldier_sprite.style.backgroundPositionY = `${-(14 * 67)}px`;
 
-    if (!current_planet.conquered) continue;
+  let spriteFrame = 0;
+  const spriteFrameCount = 5;
+  const spriteStartRow = 14;
 
-    soldiers += current_planet.auto_soldier;
-  }
-  return soldiers;
-}
+  setInterval(() => {
+    spriteFrame = (spriteFrame + 1) % spriteFrameCount;
+    const col = spriteFrame % 3;
+    const row = spriteStartRow + Math.floor(spriteFrame / 3);
+    soldier_sprite.style.backgroundPositionX = `${-(col * 116)}px`;
+    soldier_sprite.style.backgroundPositionY = `${-(row * 67)}px`;
+  }, 150);
 
-export function planet_auto_loss(
-  planets: Planet[],
-) {
-  for (let i = 0; i < planets.length; i++) {
-    const current_planet = planets[i];
-
-    if (!current_planet.conquered) continue;
-
-    current_planet.soldier_count -= current_planet.auto_soldier_loss;
-    console.log(
-      `${current_planet.name} soldier count: ${current_planet.soldier_count}`,
-    );
-  }
+  return soldier_sprite;
 }
