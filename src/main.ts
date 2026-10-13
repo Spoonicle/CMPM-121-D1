@@ -239,22 +239,27 @@ function conquer_planet(planet_index: number) {
 }
 
 conquer_button.addEventListener("click", () => {
-  if (current_planet === null) {
-    const target = planets.findIndex(
-      (p) => !p.conquered && soldiers >= p.cost,
-    );
-    if (target !== -1) {
-      current_planet = target;
-      planet_images.forEach((img, idx) => {
-        img.classList.toggle("selected_planet", idx === target);
-      });
-      conquer_planet(target);
+  const target = planets.findIndex(
+    (p) => !p.conquered && soldiers >= p.cost,
+  );
+  if (target !== -1) {
+    current_planet = target;
+    planet_images.forEach((img, idx) => {
+      img.classList.toggle("selected_planet", idx === target);
+    });
+    conquer_planet(target);
+  } else {
+    const firstUnconquered = planets.findIndex((p) => !p.conquered);
+    if (firstUnconquered !== -1) {
+      console.log(
+        `Not enough troops to conquer planet: ${
+          planets[firstUnconquered].name
+        }`,
+      );
     } else {
-      console.log("No planet selected or affordable to conquer");
+      console.log("All planets have already been conquered");
     }
-    return;
   }
-  conquer_planet(current_planet);
 });
 
 action_buttons.append(transport_button, enlist_button, conquer_button);
@@ -369,6 +374,8 @@ for (let i = 0; i < planets.length; i++) {
   cost_label.className = "planet_cost";
 
   planet.addEventListener("click", () => {
+    if (!planets[i].conquered) return;
+
     if (current_planet === i) {
       current_planet = null;
       for (const img of planet_images) {
@@ -425,6 +432,12 @@ setInterval(() => {
 
 setInterval(() => {
   planet_auto_loss(planets);
+  if (current_planet !== null && !planets[current_planet].conquered) {
+    current_planet = null;
+    for (const img of planet_images) {
+      img.classList.remove("selected_planet");
+    }
+  }
   render_current_camp();
   update_soldier_display();
   refresh_planet_display();

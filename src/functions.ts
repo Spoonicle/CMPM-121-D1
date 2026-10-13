@@ -33,6 +33,7 @@ export function update_planet_display(
       // show already conquered planet
       planet_image.style.display = "block";
       planet_image.style.filter = "none";
+      planet_image.style.cursor = "pointer";
       if (label) label.textContent = "";
     } else if (soldiers < planet.cost * 0.5) {
       // hide planet
@@ -41,6 +42,7 @@ export function update_planet_display(
     } else {
       // show unconquered planet (grayed if not yet affordable, full color if ready)
       planet_image.style.display = "block";
+      planet_image.style.cursor = "default";
       planet_image.style.filter = soldiers < planet.cost
         ? "grayscale(100%)"
         : "none";
