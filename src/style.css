@@ -37,8 +37,10 @@ body {
   justify-content: center;
 }
 
-.soldier_camp,
-.camp {
+.soldier_camp {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
   height: 320px;
   border: 2px dashed #4a4a5a;
   border-radius: 12px;
@@ -56,6 +58,14 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.soldier_sprite {
+  width: 116px;
+  height: 67px;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  margin: -14px -42px;
 }
 
 .camp {
@@ -154,6 +164,11 @@ body {
   background: #353545;
 }
 
+.upgrade_item.selected {
+  outline: 2px solid #3b82f6;
+  background: #38384a;
+}
+
 .planets_column {
   display: flex;
   flex-direction: column;
@@ -163,12 +178,19 @@ body {
   border: 1px solid #3d3d4e;
   border-radius: 12px;
   padding: 16px 8px;
+  overflow: auto;
 }
 
 .planets_title {
   margin: 0;
   font-size: 1rem;
   color: #94a3b8;
+}
+
+.planet_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .planet {
@@ -184,7 +206,12 @@ body {
   transform: scale(1.15);
 }
 
-.planet_selected {
-  transform: scale(1.15);
-  box-shadow: 0 0 12px #000000;
+.selected_planet {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+}
+
+.planet_cost {
+  font-size: 0.9rem;
+  color: #94a3b8;
 }
