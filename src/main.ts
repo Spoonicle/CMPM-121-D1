@@ -190,7 +190,6 @@ const general_button = document.createElement("button");
 general_button.className = "action_btn general_button";
 general_button.textContent = "General";
 
-
 // add soldier and update text
 enlist_button.addEventListener("click", () => {
   soldiers++;
@@ -319,28 +318,28 @@ const upgrade_actions = [
 ];
 
 upgrades.forEach((name, i) => {
-    const upgrade = document.createElement("div");
+  const upgrade = document.createElement("div");
 
-    upgrade.className = "upgrade_item";
-    upgrade.textContent = name;
+  upgrade.className = "upgrade_item";
+  upgrade.textContent = name;
 
-    upgrade.addEventListener("click", () => {
-        const upgraded = upgrade_actions[i]();
+  upgrade.addEventListener("click", () => {
+    const upgraded = upgrade_actions[i]();
 
-        if (upgraded) {
-            console.log(`Successfully upgraded: ${name}`);
-        } else {
-            console.log(`Cannot afford upgrade: ${name}`);
-        }
+    if (upgraded) {
+      console.log(`Successfully upgraded: ${name}`);
+    } else {
+      console.log(`Cannot afford upgrade: ${name}`);
+    }
 
-        update_upgrade_labels();
-        update_soldier_display();
-        refresh_planet_display();
-        render_current_camp();
-    });
+    update_upgrade_labels();
+    update_soldier_display();
+    refresh_planet_display();
+    render_current_camp();
+  });
 
-    upgrade_items.push(upgrade);
-    upgrades_shelf.append(upgrade);
+  upgrade_items.push(upgrade);
+  upgrades_shelf.append(upgrade);
 });
 
 update_upgrade_labels();
