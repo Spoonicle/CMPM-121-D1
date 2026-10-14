@@ -32,7 +32,7 @@ game.className = "game";
 let soldiers = 0;
 
 let barracks_bought = 0;
-let barracks_cost = 25;
+let barracks_cost = 50;
 let recruiting_soldier_count = 0;
 
 let pilots_bought = 0;
